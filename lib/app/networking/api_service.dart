@@ -21,9 +21,5 @@ class ApiService extends BaseApiService {
   @override
   final interceptors = {LoggingInterceptor: LoggingInterceptor()};
 
-  Future<dynamic> fetchTestData() async {
-    return await network(
-      request: (request) => request.get("/endpoint-path"),
-    );
-  }
+  
 }

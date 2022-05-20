@@ -1,5 +1,9 @@
+import 'package:ig_clone/resources/pages/first_page.dart';
 import 'package:ig_clone/resources/pages/home_page.dart';
+import 'package:ig_clone/resources/pages/login_page.dart';
+import 'package:ig_clone/resources/pages/search_page.dart';
 import 'package:nylo_framework/nylo_framework.dart';
+import 'package:page_transition/page_transition.dart';
 
 /*
 |--------------------------------------------------------------------------
@@ -13,9 +17,13 @@ import 'package:nylo_framework/nylo_framework.dart';
 */
 
 appRouter() => nyRoutes((router) {
-      router.route("/", (context) => MyHomePage(title: "Hello World"));
+      router.route("/", (context) => FirstPage());
 
       // Add your routes here
 
-      // router.route("/new-page", (context) => NewPage(), transition: PageTransitionType.fade);
+      router.route(MyHomePage.route, (context) => MyHomePage(),
+          transition: PageTransitionType.fade);
+      router.route(SearchPage.route, (context) => SearchPage());
+      router.route(LoginPage.route, (context) => LoginPage(),
+          transition: PageTransitionType.fade);
     });

@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:ig_clone/app/controllers/home_controller.dart';
-import 'package:ig_clone/bootstrap/helpers.dart';
-import 'package:ig_clone/resources/widgets/safearea_widget.dart';
+import 'package:ig_clone/resources/pages/feeds_page.dart';
+import 'package:ig_clone/resources/pages/notification_page.dart';
+import 'package:ig_clone/resources/pages/post_page.dart';
+import 'package:ig_clone/resources/pages/profile_page.dart';
+import 'package:ig_clone/resources/pages/search_page.dart';
+import 'package:ig_clone/resources/widgets/bottom_navbar_widget.dart';
 import 'package:nylo_framework/nylo_framework.dart';
-import 'package:nylo_framework/theme/helper/ny_theme.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class MyHomePage extends NyStatefulWidget {
+  static const String route = "/home";
   final HomeController controller = HomeController();
-  final String title;
 
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+  MyHomePage({Key? key}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -17,127 +21,46 @@ class MyHomePage extends NyStatefulWidget {
 
 class _MyHomePageState extends NyState<MyHomePage> {
   bool _darkMode = false;
-
+  int _selectedIndex = 0;
   @override
   init() async {}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-        centerTitle: true,
-      ),
-      body: SafeAreaWidget(
-        child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Image.asset(
-                getImageAsset("nylo_logo.png"),
-                height: 100,
-                width: 100,
-              ),
-              Text(
-                getEnv("APP_NAME"),
-                style: textTheme.headline2,
-              ),
-              Text(
-                "Micro-framework for Flutter",
-                style: textTheme.subtitle1!
-                    .setColor(context, (color) => color.primaryAccent),
-                textAlign: TextAlign.center,
-              ),
-              Text(
-                "Build something amazing 💡️",
-                style: textTheme.bodyText2,
-                textAlign: TextAlign.center,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Divider(),
-                  Container(
-                    height: 170,
-                    width: double.infinity,
-                    margin: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                    decoration: BoxDecoration(
-                        color: ThemeColor.get(context).surfaceBackground,
-                        borderRadius: BorderRadius.circular(8),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.1),
-                            spreadRadius: 1,
-                            blurRadius: 9,
-                            offset: Offset(0, 3), // changes position of shadow
-                          ),
-                        ]),
-                    child: ListView(
-                      shrinkWrap: true,
-                      children: [
-                        MaterialButton(
-                          child: Text(
-                            "documentation".tr().capitalize(),
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText1!
-                                .setColor(
-                                    context, (color) => color.surfaceContent),
-                          ),
-                          onPressed: widget.controller.onTapDocumentation,
-                        ),
-                        Divider(
-                          height: 0,
-                        ),
-                        MaterialButton(
-                          child: Text(
-                            "GitHub",
-                            style: textTheme.bodyText1!.setColor(
-                                context, (color) => color.surfaceContent),
-                          ),
-                          onPressed: widget.controller.onTapGithub,
-                        ),
-                        Divider(
-                          height: 0,
-                        ),
-                        MaterialButton(
-                          child: Text(
-                            "changelog".tr().capitalize(),
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText1!
-                                .setColor(
-                                    context, (color) => color.surfaceContent),
-                          ),
-                          onPressed: widget.controller.onTapChangeLog,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Text(
-                    nyloVersion,
-                    style: textTheme.bodyText2!.copyWith(color: Colors.grey),
-                  ),
-                  Switch(
-                      value: _darkMode,
-                      onChanged: (value) {
-                        _darkMode = value;
-                        NyTheme.set(context,
-                            id: (_darkMode == true
-                                ? 'default_dark_theme'
-                                : 'default_light_theme'));
-                        setState(() {});
-                      }),
-                  Text("${_darkMode == true ? "Dark" : "Light"} Mode"),
-                ],
-              ),
-            ],
-          ),
-        ),
+      body: SafeArea(child: _buildBody(_selectedIndex)),
+      bottomNavigationBar: BottomNavBarWidget(
+        items: [
+          BottomNavBarItem(index: 0, icon: MdiIcons.homeOutline),
+          BottomNavBarItem(index: 1, icon: Icons.search),
+          // BottomNavBarItem(index: 3, icon: Icons.play_circle_outline),
+          BottomNavBarItem(index: 3, icon: MdiIcons.heartOutline),
+          BottomNavBarItem(index: 4, icon: Icons.person_outline_outlined),
+        ],
+        startIndex: _selectedIndex,
+        onIndexChange: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
       ),
     );
+  }
+
+  Widget _buildBody(int index) {
+    switch (index) {
+      case 0:
+        return FeedsPage();
+      case 1:
+        return SearchPage();
+      case 2:
+        return PostPage();
+      case 3:
+        return NotificationPage();
+      case 4:
+        return ProfilePage();
+      default:
+        return FeedsPage();
+    }
   }
 }
