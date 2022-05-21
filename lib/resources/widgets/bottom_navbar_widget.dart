@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 
 class BottomNavBarWidget extends StatefulWidget {
   int startIndex;
@@ -15,8 +16,7 @@ class BottomNavBarWidget extends StatefulWidget {
 class _BottomNavBarWidgetState extends State<BottomNavBarWidget> {
   final int selectedOpacity = 255;
   final int unselectedOpacity = 150;
-  final double selectedIconSize = 40;
-  final double unselectedIconSize = 30;
+  final double iconSize = 27;
   int _index = 0;
   @override
   void initState() {
@@ -30,13 +30,12 @@ class _BottomNavBarWidgetState extends State<BottomNavBarWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 15, right: 15, left: 15),
       child: Container(
         width: MediaQuery.of(context).size.width,
         height: 65,
         decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor,
-            borderRadius: BorderRadius.circular(30)),
+          color: Theme.of(context).backgroundColor,
+        ),
         child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: widget.items
@@ -51,16 +50,13 @@ class _BottomNavBarWidgetState extends State<BottomNavBarWidget> {
                       child: Container(
                         height: MediaQuery.of(context).size.height,
                         padding: EdgeInsets.symmetric(horizontal: 25),
-                        child: Icon(
-                          e.icon,
-                          size: _index == e.index
-                              ? selectedIconSize
-                              : unselectedIconSize,
-                          color: Theme.of(context).backgroundColor.withAlpha(
-                              _index == e.index
-                                  ? selectedOpacity
-                                  : unselectedOpacity),
-                        ),
+                        child: _index == e.index
+                            ? Image.asset((e.selectedImage),
+                                width: iconSize,
+                                color: Theme.of(context).primaryColor)
+                            : Image.asset((e.unselectedImage),
+                                width: iconSize,
+                                color: Theme.of(context).primaryColor),
                       ),
                     ))
                 .toList()),
@@ -71,9 +67,12 @@ class _BottomNavBarWidgetState extends State<BottomNavBarWidget> {
 
 class BottomNavBarItem {
   final int index;
-  final IconData icon;
+
+  String unselectedImage;
+  String selectedImage;
   BottomNavBarItem({
     required this.index,
-    required this.icon,
+    required this.selectedImage,
+    required this.unselectedImage,
   });
 }

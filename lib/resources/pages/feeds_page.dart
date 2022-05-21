@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:ig_clone/resources/pages/chat_list_page.dart';
+import 'package:ig_clone/resources/widgets/post_widget.dart';
+import 'package:ig_clone/resources/widgets/story_widget.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import '../../app/controllers/feeds_controller.dart';
 
@@ -22,51 +25,79 @@ class _FeedsPageState extends NyState<FeedsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-          child: Container(
-        child: Column(
-          children: [
+    return CustomScrollView(
+      slivers: [
+        SliverAppBar(
+          title: Text(
+            'Newsfeed',
+            style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).primaryColor),
+          ),
+          actions: [
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    flex: 2,
-                    child: Text(
-                      'Newsfeed',
-                      style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
+              margin: EdgeInsets.symmetric(horizontal: 10),
+              child: Image.asset(
+                getImageAsset(
+                  'icons/more.png',
+                ),
+                width: 28,
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              child: InkWell(
+                onTap: () {
+                  routeTo(ChatListPage.route);
+                },
+                child: Image.asset(
+                  getImageAsset(
+                    'icons/chat.png',
                   ),
-                  Row(
-                    children: [
-                      Container(
-                        child: Icon(
-                          Icons.add_box_outlined,
-                          size: 30,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Container(
-                        child: Icon(
-                          Icons.messenger_outline,
-                          size: 30,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                  width: 28,
+                  color: Theme.of(context).primaryColor,
+                ),
               ),
             ),
           ],
+          backgroundColor: Theme.of(context).backgroundColor,
+          pinned: true,
         ),
-      )),
+        SliverToBoxAdapter(
+          child: Column(
+            children: [
+              Container(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(children: [
+                    Story(
+                      isAddButton: true,
+                    ),
+                    Story(),
+                    Story(),
+                    Story(),
+                    Story(),
+                    Story(),
+                  ]),
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: [
+                    Post(),
+                    Post(),
+                    Post(),
+                    Post(),
+                    Post(),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

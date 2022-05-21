@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:ig_clone/app/controllers/home_controller.dart';
 import 'package:ig_clone/resources/pages/feeds_page.dart';
 import 'package:ig_clone/resources/pages/notification_page.dart';
@@ -7,7 +8,6 @@ import 'package:ig_clone/resources/pages/profile_page.dart';
 import 'package:ig_clone/resources/pages/search_page.dart';
 import 'package:ig_clone/resources/widgets/bottom_navbar_widget.dart';
 import 'package:nylo_framework/nylo_framework.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class MyHomePage extends NyStatefulWidget {
   static const String route = "/home";
@@ -28,14 +28,43 @@ class _MyHomePageState extends NyState<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(child: _buildBody(_selectedIndex)),
-      bottomNavigationBar: BottomNavBarWidget(
+      body: Stack(
+        clipBehavior: Clip.hardEdge,
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: _buildBody(_selectedIndex),
+          ),
+        ],
+      ),
+      bottomSheet: BottomNavBarWidget(
         items: [
-          BottomNavBarItem(index: 0, icon: MdiIcons.homeOutline),
-          BottomNavBarItem(index: 1, icon: Icons.search),
-          // BottomNavBarItem(index: 3, icon: Icons.play_circle_outline),
-          BottomNavBarItem(index: 3, icon: MdiIcons.heartOutline),
-          BottomNavBarItem(index: 4, icon: Icons.person_outline_outlined),
+          BottomNavBarItem(
+            index: 0,
+            unselectedImage: getImageAsset("icons/home.png"),
+            selectedImage: getImageAsset("icons/home_fill.png"),
+          ),
+          BottomNavBarItem(
+            index: 1,
+            unselectedImage: getImageAsset("icons/search.png"),
+            selectedImage: getImageAsset("icons/search_selected.png"),
+          ),
+          BottomNavBarItem(
+            index: 2,
+            unselectedImage: getImageAsset("icons/video.png"),
+            selectedImage: getImageAsset("icons/video_selected.png"),
+          ),
+          BottomNavBarItem(
+            index: 3,
+            unselectedImage: getImageAsset("icons/heart.png"),
+            selectedImage: getImageAsset("icons/heart_fill.png"),
+          ),
+          BottomNavBarItem(
+            index: 4,
+            unselectedImage: getImageAsset("icons/story.png"),
+            selectedImage: getImageAsset("icons/story.png"),
+          ),
         ],
         startIndex: _selectedIndex,
         onIndexChange: (index) {

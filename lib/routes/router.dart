@@ -1,6 +1,8 @@
+import 'package:ig_clone/resources/pages/chat_list_page.dart';
 import 'package:ig_clone/resources/pages/first_page.dart';
 import 'package:ig_clone/resources/pages/home_page.dart';
 import 'package:ig_clone/resources/pages/login_page.dart';
+import 'package:ig_clone/resources/pages/profile_edit_page.dart';
 import 'package:ig_clone/resources/pages/search_page.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:page_transition/page_transition.dart';
@@ -26,4 +28,8 @@ appRouter() => nyRoutes((router) {
       router.route(SearchPage.route, (context) => SearchPage());
       router.route(LoginPage.route, (context) => LoginPage(),
           transition: PageTransitionType.fade);
+      router.route(ChatListPage.route, (context) => ChatListPage(),
+          transition: PageTransitionType.rightToLeft);
+      router.route(ProfileEditPage.route, (context) => ProfileEditPage(),
+          transition: PageTransitionType.bottomToTop);
     });

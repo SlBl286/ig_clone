@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:ig_clone/app/models/user.dart';
 import 'package:ig_clone/app/networking/dio/base_api_service.dart';
 import 'package:ig_clone/app/networking/dio/interceptors/bearer_auth_interceptor.dart';
 import 'package:nylo_framework/nylo_framework.dart';
@@ -12,8 +13,8 @@ class UserApiService extends BaseApiService {
   String get baseUrl => getEnv('API_BASE_URL');
 
   final interceptors = {BearerAuthInterceptor: BearerAuthInterceptor()};
-  Future<dynamic> me() async {
-    return await network<dynamic>(
+  Future<User?> me() async {
+    return await network<User>(
       request: (request) => request.get("/users/me"),
       handleFailure: (error) {
         print(error);
