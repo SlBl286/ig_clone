@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ig_clone/app/models/dto/user_update_dto.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import '../../app/controllers/profile_edit_controller.dart';
 
@@ -13,6 +14,10 @@ class ProfileEditPage extends NyStatefulWidget {
 }
 
 class _ProfileEditPageState extends NyState<ProfileEditPage> {
+  String? _name;
+  String? _nickName;
+  String? _website;
+  String? _bio;
   @override
   init() async {}
 
@@ -50,8 +55,16 @@ class _ProfileEditPageState extends NyState<ProfileEditPage> {
                     ),
                   ),
                   IconButton(
-                    onPressed: () {
-                      pop();
+                    onPressed: () async {
+                      var res = await widget.controller.updateUser(
+                          UserUpdateDto.fromJson({
+                        "name": _name,
+                        "nickName": _nickName,
+                        "bio": _bio,
+                        "website": _website
+                      }));
+                      if (res != null) pop();
+                      
                     },
                     icon: Icon(
                       Icons.done,
@@ -86,6 +99,12 @@ class _ProfileEditPageState extends NyState<ProfileEditPage> {
                     Container(
                       padding: EdgeInsets.symmetric(vertical: 10),
                       child: TextField(
+                        onChanged: (text) {
+                          setState(() {
+                            if (text.isEmpty) _name = null;
+                            _name = text;
+                          });
+                        },
                         decoration: InputDecoration(
                           hintText: "Tên",
                           hintStyle: TextStyle(color: Colors.white),
@@ -102,6 +121,12 @@ class _ProfileEditPageState extends NyState<ProfileEditPage> {
                     Container(
                       padding: EdgeInsets.symmetric(vertical: 10),
                       child: TextField(
+                        onChanged: (text) {
+                          setState(() {
+                            if (text.isEmpty) _nickName = null;
+                            _nickName = text;
+                          });
+                        },
                         decoration: InputDecoration(
                           hintText: "Tên người dùng",
                           hintStyle: TextStyle(color: Colors.white),
@@ -118,6 +143,12 @@ class _ProfileEditPageState extends NyState<ProfileEditPage> {
                     Container(
                       padding: EdgeInsets.symmetric(vertical: 10),
                       child: TextField(
+                        onChanged: (text) {
+                          setState(() {
+                            if (text.isEmpty) _website = null;
+                            _website = text;
+                          });
+                        },
                         decoration: InputDecoration(
                           hintText: "Trang web",
                           hintStyle: TextStyle(color: Colors.white),
@@ -134,6 +165,12 @@ class _ProfileEditPageState extends NyState<ProfileEditPage> {
                     Container(
                       padding: EdgeInsets.symmetric(vertical: 10),
                       child: TextField(
+                        onChanged: (text) {
+                          setState(() {
+                            if (text.isEmpty) _bio = null;
+                            _bio = text;
+                          });
+                        },
                         decoration: InputDecoration(
                           hintText: "Tiểu sử",
                           hintStyle: TextStyle(color: Colors.white),
