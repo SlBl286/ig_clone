@@ -47,7 +47,11 @@ class _ProfilePageState extends NyState<ProfilePage>
                 ),
               ),
               Text(
-                _user != null ? _user!.nickname : 'Nickname',
+                _user != null
+                    ? _user!.nickname != null
+                        ? _user!.nickname!
+                        : 'Nickname'
+                    : 'Nickname',
                 style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -177,11 +181,19 @@ class _ProfilePageState extends NyState<ProfilePage>
               ),
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 20),
-                child: Text(_user != null ? _user!.name : "Name"),
+                child: Text(_user != null
+                    ? _user!.name != null
+                        ? _user!.name!
+                        : "Name"
+                    : "Name"),
               ),
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 20),
-                child: Text(_user != null ? _user!.bio : "bio"),
+                child: Text(_user != null
+                    ? _user!.bio != null
+                        ? _user!.bio!
+                        : "bio"
+                    : "bio"),
               ),
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),

@@ -1,10 +1,10 @@
 class User {
-  late String name;
+  late String? name;
   late String email;
-  late String nickname;
-  late String avatar;
-  late String bio;
-  late String website;
+  late String? nickname;
+  late String? avatar;
+  late String? bio;
+  late String? website;
 
   User.fromJson(dynamic data) {
     this.name = data['name'];
