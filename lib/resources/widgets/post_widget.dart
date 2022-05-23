@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'dart:math';
 
@@ -7,9 +8,59 @@ class Post extends StatefulWidget {
   _PostState createState() => _PostState();
 }
 
-class _PostState extends NyState<Post> {
+class _PostState extends NyState<Post> with TickerProviderStateMixin {
   var rnd = Random();
   int _imgIndex = 1;
+  bool _isLiked = false;
+
+  showLikeAnimation() async {
+    var controller =
+        AnimationController(duration: Duration(milliseconds: 500), vsync: this);
+
+    var curve = CurvedAnimation(parent: controller, curve: Curves.easeIn);
+    var animation = Tween(begin: 0.0, end: 1.0).animate(curve);
+    var renderBox = context.findRenderObject() as RenderBox;
+    var center = renderBox.size.center(Offset.zero);
+    var heart = SvgPicture.asset(
+      getImageAsset("icons/heart.svg"),
+      width: 100,
+      height: 100,
+    );
+    var heartPosition = Offset(center.dx - 25, center.dy - 25);
+    var heartSize = Size(50, 50);
+    var heartColor = Colors.white;
+    var heartColorTween =
+        ColorTween(begin: heartColor, end: Colors.transparent);
+    var heartOpacity = Tween(begin: 1.0, end: 0.0).animate(curve);
+    Overlay.of(context)!.insert(
+      OverlayEntry(
+        builder: (context) => Positioned(
+          top: heartPosition.dy,
+          left: heartPosition.dx,
+          child: FadeTransition(
+            opacity: heartOpacity,
+            child: Container(
+              width: heartSize.width,
+              height: heartSize.height,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: heartColorTween.evaluate(heartOpacity),
+              ),
+              child: Center(
+                child: heart,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    await Future.delayed(Duration(milliseconds: 500));
+    
+    setState(() {
+      _isLiked = !_isLiked;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,14 +77,13 @@ class _PostState extends NyState<Post> {
                 Container(
                   width: 35,
                   height: 35,
-                  padding: EdgeInsets.all(5),
+                  padding: EdgeInsets.all(1),
                   margin: EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25),
                   ),
                   child: Image.asset(
-                    getImageAsset('icons/bell.png'),
-                    color: Colors.blue,
+                    getImageAsset('icons/man_no_avatar.png'),
                   ),
                 ),
                 Container(
@@ -67,8 +117,8 @@ class _PostState extends NyState<Post> {
                       Container(
                         width: 20,
                         height: 20,
-                        child: Image.asset(
-                          getImageAsset('icons/more_dot.png'),
+                        child: SvgPicture.asset(
+                          getImageAsset('icons/more_dot.svg'),
                           color: Theme.of(context).primaryColor,
                         ),
                       ),
@@ -78,46 +128,51 @@ class _PostState extends NyState<Post> {
               ],
             ),
           ),
-          Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.width,
-              child: Stack(
-                children: [
-                  PageView(
-                    onPageChanged: ((value) => setState(() {
-                          _imgIndex = value + 1;
-                        })),
-                    children: [
-                      Image.asset(
-                        getImageAsset('1308931.jpg'),
-                        fit: BoxFit.fitWidth,
-                      ),
-                      Image.asset(
-                        getImageAsset('icons/more.png'),
-                        fit: BoxFit.fitWidth,
-                      ),
-                    ],
-                  ),
-                  Positioned(
-                    top: 10,
-                    right: 10,
-                    child: Container(
-                      width: 45,
-                      height: 30,
-                      padding: EdgeInsets.all(5),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(25),
-                        color: Colors.black.withOpacity(0.5),
-                      ),
-                      child: Text(
-                        "$_imgIndex/2",
-                        style: TextStyle(color: Colors.white, fontSize: 13),
+          InkWell(
+            onDoubleTap: () {
+              showLikeAnimation();
+            },
+            child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.width,
+                child: Stack(
+                  children: [
+                    PageView(
+                      onPageChanged: ((value) => setState(() {
+                            _imgIndex = value + 1;
+                          })),
+                      children: [
+                        Image.asset(
+                          getImageAsset('1308931.jpg'),
+                          fit: BoxFit.fitWidth,
+                        ),
+                        Image.asset(
+                          getImageAsset('icons/woman_no_avatar.png'),
+                          fit: BoxFit.fitWidth,
+                        ),
+                      ],
+                    ),
+                    Positioned(
+                      top: 10,
+                      right: 10,
+                      child: Container(
+                        width: 45,
+                        height: 30,
+                        padding: EdgeInsets.all(5),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25),
+                          color: Colors.black.withOpacity(0.5),
+                        ),
+                        child: Text(
+                          "$_imgIndex/2",
+                          style: TextStyle(color: Colors.white, fontSize: 13),
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              )),
+                  ],
+                )),
+          ),
           Container(
             width: MediaQuery.of(context).size.width,
             height: 150,
@@ -133,18 +188,30 @@ class _PostState extends NyState<Post> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Image.asset(
-                              getImageAsset('icons/heart.png'),
-                              width: 25,
-                              color: Theme.of(context).primaryColor,
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  _isLiked = !_isLiked;
+                                });
+                              },
+                              child: _isLiked
+                                  ? SvgPicture.asset(
+                                      getImageAsset('icons/heart_selected.svg'),
+                                      color: Colors.red,
+                                    )
+                                  : SvgPicture.asset(
+                                      getImageAsset('icons/heart.svg'),
+                                      width: 25,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
                             ),
-                            Image.asset(
-                              getImageAsset('icons/comment.png'),
+                            SvgPicture.asset(
+                              getImageAsset('icons/comment.svg'),
                               color: Theme.of(context).primaryColor,
                               width: 25,
                             ),
-                            Image.asset(
-                              getImageAsset('icons/send.png'),
+                            SvgPicture.asset(
+                              getImageAsset('icons/share_inapp.svg'),
                               color: Theme.of(context).primaryColor,
                               width: 25,
                             ),
@@ -219,8 +286,8 @@ class _PostState extends NyState<Post> {
                                   ],
                                 ),
                               ),
-                              Image.asset(
-                                getImageAsset('icons/save-instagram.png'),
+                              SvgPicture.asset(
+                                getImageAsset('icons/bookmark.svg'),
                                 color: Theme.of(context).primaryColor,
                                 width: 25,
                               ),

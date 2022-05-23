@@ -83,23 +83,41 @@ class _StoryState extends NyState<Story> {
             ),
           )
         : Container(
-            margin: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+            margin: EdgeInsets.symmetric(vertical: 5),
             width: 90,
             height: 110,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  width: 85,
-                  height: 85,
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: Image.asset(
-                    getImageAsset("icons/story.png"),
-                    color: Theme.of(context).primaryColor,
-                  ),
+                Stack(
+                  children: [
+                    Container(
+                      width: 85,
+                      height: 85,
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: Image.asset(
+                        getImageAsset("icons/man_no_avatar.png"),
+                      ),
+                    ),
+                    Positioned(
+                        bottom: 10,
+                        right: 10,
+                        child: Container(
+                          height: 20,
+                          width: 20,
+                          decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          child: Icon(
+                            Icons.add,
+                            size: 20,
+                          ),
+                        ))
+                  ],
                 ),
                 SizedBox(
                   height: 5,

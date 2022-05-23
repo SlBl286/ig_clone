@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ig_clone/app/models/user.dart';
 import 'package:ig_clone/resources/pages/profile_edit_page.dart';
 import 'package:ig_clone/resources/widgets/story_widget.dart';
@@ -18,6 +19,7 @@ class _ProfilePageState extends NyState<ProfilePage>
     with TickerProviderStateMixin {
   User? _user;
   late TabController _tabController;
+  bool? _onPopReload;
   @override
   init() async {
     _tabController = TabController(length: 3, vsync: this);
@@ -38,9 +40,9 @@ class _ProfilePageState extends NyState<ProfilePage>
             children: [
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 5),
-                child: Image.asset(
+                child: SvgPicture.asset(
                   getImageAsset(
-                    'icons/lock.png',
+                    'icons/lock.svg',
                   ),
                   width: 15,
                   color: Theme.of(context).primaryColor,
@@ -62,9 +64,9 @@ class _ProfilePageState extends NyState<ProfilePage>
           actions: [
             Container(
               margin: EdgeInsets.symmetric(horizontal: 10),
-              child: Image.asset(
+              child: SvgPicture.asset(
                 getImageAsset(
-                  'icons/more.png',
+                  'icons/add.svg',
                 ),
                 width: 28,
                 color: Theme.of(context).primaryColor,
@@ -74,9 +76,9 @@ class _ProfilePageState extends NyState<ProfilePage>
               margin: EdgeInsets.symmetric(horizontal: 20),
               child: InkWell(
                 onTap: () {},
-                child: Image.asset(
+                child: SvgPicture.asset(
                   getImageAsset(
-                    'icons/more_menu.png',
+                    'icons/more_line.svg',
                   ),
                   width: 28,
                   color: Theme.of(context).primaryColor,
@@ -103,7 +105,9 @@ class _ProfilePageState extends NyState<ProfilePage>
                         height: 80,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
-                          color: Colors.red,
+                        ),
+                        child: Image.asset(
+                          getImageAsset('icons/man_no_avatar.png'),
                         ),
                       ),
                     ),
@@ -201,8 +205,12 @@ class _ProfilePageState extends NyState<ProfilePage>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     InkWell(
-                      onTap: () {
-                        routeTo(ProfileEditPage.route);
+                      onTap: () async {
+                        _onPopReload = await routeTo(ProfileEditPage.route);
+
+                        setState(() {
+                          _onPopReload = true;
+                        });
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width - 100,
@@ -238,7 +246,8 @@ class _ProfilePageState extends NyState<ProfilePage>
                             color: Theme.of(context).primaryColor,
                           ),
                         ),
-                        child: Image.asset(getImageAsset('icons/more_user.png'),
+                        child: SvgPicture.asset(
+                            getImageAsset('icons/more_user.svg'),
                             width: 20,
                             height: 15,
                             color: Theme.of(context).primaryColor),
@@ -267,22 +276,22 @@ class _ProfilePageState extends NyState<ProfilePage>
                       controller: _tabController,
                       tabs: [
                         Tab(
-                          child: Image.asset(
-                            getImageAsset('icons/post.png'),
+                          child: SvgPicture.asset(
+                            getImageAsset('icons/gallery.svg'),
                             color: Theme.of(context).primaryColor,
                             width: 25,
                           ),
                         ),
                         Tab(
-                          child: Image.asset(
-                            getImageAsset('icons/video.png'),
+                          child: SvgPicture.asset(
+                            getImageAsset('icons/short_video.svg'),
                             color: Theme.of(context).primaryColor,
                             width: 25,
                           ),
                         ),
                         Tab(
-                          child: Image.asset(
-                            getImageAsset('icons/lock.png'),
+                          child: SvgPicture.asset(
+                            getImageAsset('icons/tag.svg'),
                             color: Theme.of(context).primaryColor,
                             width: 25,
                           ),
@@ -294,20 +303,20 @@ class _ProfilePageState extends NyState<ProfilePage>
                         controller: _tabController,
                         children: [
                           Center(
-                            child: Image.asset(
-                              getImageAsset('icons/post.png'),
+                            child: SvgPicture.asset(
+                              getImageAsset('icons/gallery.svg'),
                               width: 100,
                             ),
                           ),
                           Center(
-                            child: Image.asset(
-                              getImageAsset('icons/video.png'),
+                            child: SvgPicture.asset(
+                              getImageAsset('icons/short_video.svg'),
                               width: 100,
                             ),
                           ),
                           Center(
-                            child: Image.asset(
-                              getImageAsset('icons/lock.png'),
+                            child: SvgPicture.asset(
+                              getImageAsset('icons/tag.svg'),
                               width: 100,
                             ),
                           ),

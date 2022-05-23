@@ -1,4 +1,5 @@
 import 'package:ig_clone/resources/pages/chat_list_page.dart';
+import 'package:ig_clone/resources/pages/custom_image_picker_page.dart';
 import 'package:ig_clone/resources/pages/first_page.dart';
 import 'package:ig_clone/resources/pages/home_page.dart';
 import 'package:ig_clone/resources/pages/login_page.dart';
@@ -31,5 +32,8 @@ appRouter() => nyRoutes((router) {
       router.route(ChatListPage.route, (context) => ChatListPage(),
           transition: PageTransitionType.rightToLeft);
       router.route(ProfileEditPage.route, (context) => ProfileEditPage(),
+          transition: PageTransitionType.bottomToTop);
+      router.route(
+          CustomImagePickerPage.route, (context) => CustomImagePickerPage(),
           transition: PageTransitionType.bottomToTop);
     });

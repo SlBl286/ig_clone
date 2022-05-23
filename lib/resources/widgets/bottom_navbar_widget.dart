@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 class BottomNavBarWidget extends StatefulWidget {
   int startIndex;
   final List<BottomNavBarItem> items;
   final Function(int) onIndexChange;
-  BottomNavBarWidget(
-      {required this.startIndex,
-      required this.items,
-      required this.onIndexChange});
+
+  BottomNavBarWidget({
+    required this.startIndex,
+    required this.items,
+    required this.onIndexChange,
+  });
   @override
   _BottomNavBarWidgetState createState() => _BottomNavBarWidgetState();
 }
@@ -50,13 +53,23 @@ class _BottomNavBarWidgetState extends State<BottomNavBarWidget> {
                       child: Container(
                         height: MediaQuery.of(context).size.height,
                         padding: EdgeInsets.symmetric(horizontal: 25),
-                        child: _index == e.index
-                            ? Image.asset((e.selectedImage),
-                                width: iconSize,
-                                color: Theme.of(context).primaryColor)
-                            : Image.asset((e.unselectedImage),
-                                width: iconSize,
-                                color: Theme.of(context).primaryColor),
+                        child: e.isImage
+                            ? (_index == e.index
+                                ? Image.asset(
+                                    (e.selectedImage),
+                                    width: iconSize,
+                                  )
+                                : Image.asset(
+                                    (e.unselectedImage),
+                                    width: iconSize,
+                                  ))
+                            : (_index == e.index
+                                ? SvgPicture.asset((e.selectedImage),
+                                    width: iconSize,
+                                    color: Theme.of(context).primaryColor)
+                                : SvgPicture.asset((e.unselectedImage),
+                                    width: iconSize,
+                                    color: Theme.of(context).primaryColor)),
                       ),
                     ))
                 .toList()),
@@ -70,9 +83,11 @@ class BottomNavBarItem {
 
   String unselectedImage;
   String selectedImage;
+  final isImage;
   BottomNavBarItem({
     required this.index,
     required this.selectedImage,
     required this.unselectedImage,
+    this.isImage = false,
   });
 }

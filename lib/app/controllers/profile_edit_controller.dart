@@ -11,6 +11,12 @@ class ProfileEditController extends Controller {
     super.construct(context);
   }
 
+  Future<User?> getUser() async {
+    var user = await _userApiService.me();
+ 
+    return user;
+  }
+
   Future<User?> updateUser(UserUpdateDto dto) async {
     var res = await _userApiService.updateMe(dto);
     return res;
