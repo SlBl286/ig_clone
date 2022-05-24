@@ -9,43 +9,39 @@ class Post extends StatefulWidget {
 }
 
 class _PostState extends NyState<Post> with TickerProviderStateMixin {
+  GlobalKey imageKey = GlobalKey();
   var rnd = Random();
   int _imgIndex = 1;
   bool _isLiked = false;
 
   showLikeAnimation() async {
     var controller =
-        AnimationController(duration: Duration(milliseconds: 500), vsync: this);
+        AnimationController(duration: Duration(milliseconds: 700), vsync: this);
 
-    var curve = CurvedAnimation(parent: controller, curve: Curves.easeIn);
-    var animation = Tween(begin: 0.0, end: 1.0).animate(curve);
-    var renderBox = context.findRenderObject() as RenderBox;
-    var center = renderBox.size.center(Offset.zero);
+    var curve = CurvedAnimation(parent: controller, curve: Curves.bounceInOut);
+    var renderBox = imageKey.currentContext!.findRenderObject() as RenderBox;
+    var center = renderBox.localToGlobal(
+        Offset(renderBox.size.width / 2, renderBox.size.height / 2));
     var heart = SvgPicture.asset(
-      getImageAsset("icons/heart.svg"),
+      getImageAsset("icons/heart_selected.svg"),
       width: 100,
       height: 100,
+      color: Colors.white,
     );
-    var heartPosition = Offset(center.dx - 25, center.dy - 25);
-    var heartSize = Size(50, 50);
-    var heartColor = Colors.white;
-    var heartColorTween =
-        ColorTween(begin: heartColor, end: Colors.transparent);
-    var heartOpacity = Tween(begin: 1.0, end: 0.0).animate(curve);
+
+    var heartSize = Tween(begin: 0.0, end: 1.0).animate(curve);
     Overlay.of(context)!.insert(
       OverlayEntry(
         builder: (context) => Positioned(
-          top: heartPosition.dy,
-          left: heartPosition.dx,
-          child: FadeTransition(
-            opacity: heartOpacity,
+          top: center.dy - 50,
+          left: center.dx - 50,
+          child: ScaleTransition(
+            scale: heartSize,
             child: Container(
-              width: heartSize.width,
-              height: heartSize.height,
+              width: 100,
+              height: 100,
               decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: heartColorTween.evaluate(heartOpacity),
-              ),
+                  shape: BoxShape.circle, color: Colors.transparent),
               child: Center(
                 child: heart,
               ),
@@ -54,11 +50,12 @@ class _PostState extends NyState<Post> with TickerProviderStateMixin {
         ),
       ),
     );
-    await Future.delayed(Duration(milliseconds: 500));
-    
     setState(() {
-      _isLiked = !_isLiked;
+      _isLiked = true;
     });
+    controller.forward();
+    await Future.delayed(Duration(milliseconds: 800));
+    controller.reset();
   }
 
   @override
@@ -133,6 +130,7 @@ class _PostState extends NyState<Post> with TickerProviderStateMixin {
               showLikeAnimation();
             },
             child: Container(
+                key: imageKey,
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.width,
                 child: Stack(

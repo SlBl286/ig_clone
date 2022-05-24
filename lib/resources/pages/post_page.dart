@@ -1,4 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ig_clone/bootstrap/helpers.dart';
+import 'package:ig_clone/config/theme.dart';
+import 'package:ig_clone/resources/themes/styles/dark_theme_colors.dart';
+import 'package:ig_clone/resources/widgets/short_video_widget.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:video_player/video_player.dart';
 import '../../app/controllers/post_controller.dart';
@@ -13,55 +21,40 @@ class PostPage extends NyStatefulWidget {
 }
 
 class _PostPageState extends NyState<PostPage> {
-  String _videoUrl = "http://192.168.1.40:2202/cdn/file?mediaId=13";
-  late VideoPlayerController _videoController;
   @override
   init() async {
-    _videoController = VideoPlayerController.network(_videoUrl)
-      ..addListener(() => setState(() {}))
-      ..setLooping(true)
-      ..initialize().then((_) {
-        print(_videoController.value.aspectRatio);
-        _videoController.play();
-      });
     super.init();
   }
 
   @override
   void dispose() {
-    _videoController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarBrightness: Brightness.light,
+      statusBarIconBrightness: Brightness.light,
+    ));
     return Scaffold(
+      backgroundColor: ThemeConfig.dark().colors.background,
       body: SafeArea(
-          child: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        child: GestureDetector(
-          onVerticalDragEnd: ((details) {
-            setState(() {
-              _videoUrl = "http://192.168.1.40:2202/cdn/file?mediaId=12";
-            });
-          }),
-          child: Container(
-            height: _videoController.value.size.height,
-            width: _videoController.value.size.width,
-            alignment: Alignment.topCenter,
-            child: _videoController != null &&
-                    _videoController.value.isInitialized
-                ? VideoPlayer(_videoController)
-                : Container(
-                    child: Text(
-                      'loading',
-                      style: TextStyle(color: Theme.of(context).primaryColor),
-                    ),
-                  ),
+        child: Container(
+          child: PageView(
+            scrollDirection: Axis.vertical,
+            children: [
+              ShortVideo(
+                  videoUrl: getEnv("API_BASE_URL") + "cdn/file?mediaId=12"),
+              ShortVideo(
+                  videoUrl: getEnv("API_BASE_URL") + "cdn/file?mediaId=13"),
+              ShortVideo(
+                  videoUrl: getEnv("API_BASE_URL") + "cdn/file?mediaId=14"),
+            ],
           ),
         ),
-      )),
+      ),
     );
   }
 }

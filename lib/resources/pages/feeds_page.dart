@@ -26,79 +26,83 @@ class _FeedsPageState extends NyState<FeedsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        SliverAppBar(
-          title: Text(
-            'Newsfeed',
-            style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).primaryColor),
-          ),
-          actions: [
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 10),
-              child: SvgPicture.asset(
-                getImageAsset(
-                  'icons/add.svg',
-                ),
-                width: 28,
-                color: Theme.of(context).primaryColor,
-              ),
+    return ScrollConfiguration(
+      behavior: const MaterialScrollBehavior(
+          androidOverscrollIndicator: AndroidOverscrollIndicator.stretch),
+      child: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            title: Text(
+              'Newsfeed',
+              style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).primaryColor),
             ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 20),
-              child: InkWell(
-                onTap: () {
-                  routeTo(ChatListPage.route);
-                },
+            actions: [
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 10),
                 child: SvgPicture.asset(
                   getImageAsset(
-                    'icons/chat.svg',
+                    'icons/add.svg',
                   ),
                   width: 28,
                   color: Theme.of(context).primaryColor,
                 ),
               ),
-            ),
-          ],
-          backgroundColor: Theme.of(context).backgroundColor,
-          pinned: true,
-        ),
-        SliverToBoxAdapter(
-          child: Column(
-            children: [
               Container(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(children: [
-                    Story(
-                      isAddButton: true,
+                margin: EdgeInsets.symmetric(horizontal: 20),
+                child: InkWell(
+                  onTap: () {
+                    routeTo(ChatListPage.route);
+                  },
+                  child: SvgPicture.asset(
+                    getImageAsset(
+                      'icons/chat.svg',
                     ),
-                    Story(),
-                    Story(),
-                    Story(),
-                    Story(),
-                    Story(),
-                  ]),
+                    width: 28,
+                    color: Theme.of(context).primaryColor,
+                  ),
                 ),
               ),
-              Container(
-                child: Column(
-                  children: [
-                    Post(),
-                    Post(),
-                    Post(),
-                    Post(),
-                    Post(),
-                  ],
-                ),
-              )
             ],
+            backgroundColor: Theme.of(context).backgroundColor,
+            pinned: true,
           ),
-        ),
-      ],
+          SliverToBoxAdapter(
+            child: Column(
+              children: [
+                Container(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(children: [
+                      Story(
+                        isAddButton: true,
+                      ),
+                      Story(),
+                      Story(),
+                      Story(),
+                      Story(),
+                      Story(),
+                    ]),
+                  ),
+                ),
+                Container(
+                  child: Column(
+                    children: [
+                      Post(),
+                      Post(),
+                      Post(),
+                      Post(),
+                      Post(),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

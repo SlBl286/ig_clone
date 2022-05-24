@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:ig_clone/app/controllers/home_controller.dart';
+import 'package:ig_clone/config/theme.dart';
+import 'package:ig_clone/resources/pages/chat_list_page.dart';
 import 'package:ig_clone/resources/pages/feeds_page.dart';
 import 'package:ig_clone/resources/pages/notification_page.dart';
 import 'package:ig_clone/resources/pages/post_page.dart';
@@ -34,45 +36,60 @@ class _MyHomePageState extends NyState<MyHomePage> {
           Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            child: _buildBody(_selectedIndex),
+            child: PageView(
+              children: [
+                _buildBody(_selectedIndex),
+                if (_selectedIndex == 0) ChatListPage(),
+              ],
+            ),
           ),
         ],
       ),
-      bottomSheet: BottomNavBarWidget(
-        items: [
-          BottomNavBarItem(
-            index: 0,
-            unselectedImage: getImageAsset("icons/home.svg"),
-            selectedImage: getImageAsset("icons/home_selected.svg"),
-          ),
-          BottomNavBarItem(
-            index: 1,
-            unselectedImage: getImageAsset("icons/search.svg"),
-            selectedImage: getImageAsset("icons/search_selected.svg"),
-          ),
-          BottomNavBarItem(
-            index: 2,
-            unselectedImage: getImageAsset("icons/short_video.svg"),
-            selectedImage: getImageAsset("icons/short_video_selected.svg"),
-          ),
-          BottomNavBarItem(
-            index: 3,
-            unselectedImage: getImageAsset("icons/heart.svg"),
-            selectedImage: getImageAsset("icons/heart_selected.svg"),
-          ),
-          BottomNavBarItem(
-            isImage: true,
-            index: 4,
-            unselectedImage: getImageAsset("icons/man_no_avatar.png"),
-            selectedImage: getImageAsset("icons/man_no_avatar.png"),
-          ),
-        ],
-        startIndex: _selectedIndex,
-        onIndexChange: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
+      bottomSheet: Theme(
+        data: Theme.of(context).copyWith(
+          backgroundColor: _selectedIndex == 2
+              ? ThemeConfig.dark().colors.background
+              : Theme.of(context).backgroundColor,
+          primaryColor: _selectedIndex == 2
+              ? ThemeConfig.dark().colors.primaryContent
+              : Theme.of(context).primaryColor,
+        ),
+        child: BottomNavBarWidget(
+          items: [
+            BottomNavBarItem(
+              index: 0,
+              unselectedImage: getImageAsset("icons/home.svg"),
+              selectedImage: getImageAsset("icons/home_selected.svg"),
+            ),
+            BottomNavBarItem(
+              index: 1,
+              unselectedImage: getImageAsset("icons/search.svg"),
+              selectedImage: getImageAsset("icons/search_selected.svg"),
+            ),
+            BottomNavBarItem(
+              index: 2,
+              unselectedImage: getImageAsset("icons/short_video.svg"),
+              selectedImage: getImageAsset("icons/short_video_selected.svg"),
+            ),
+            BottomNavBarItem(
+              index: 3,
+              unselectedImage: getImageAsset("icons/heart.svg"),
+              selectedImage: getImageAsset("icons/heart_selected.svg"),
+            ),
+            BottomNavBarItem(
+              isImage: true,
+              index: 4,
+              unselectedImage: getImageAsset("icons/man_no_avatar.png"),
+              selectedImage: getImageAsset("icons/man_no_avatar.png"),
+            ),
+          ],
+          startIndex: _selectedIndex,
+          onIndexChange: (index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+          },
+        ),
       ),
     );
   }

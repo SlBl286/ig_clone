@@ -22,12 +22,25 @@ class _NotificationPageState extends NyState<NotificationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: SafeArea(
-          child: Container(
-        child: Text('notification'),
-      )),
+    return CustomScrollView(
+      slivers: [
+        SliverAppBar(
+          title: Text(
+            'Hoạt động',
+            style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).primaryColor),
+          ),
+          backgroundColor: Theme.of(context).backgroundColor,
+          pinned: true,
+        ),
+        SliverToBoxAdapter(
+          child: Column(
+            children: [],
+          ),
+        ),
+      ],
     );
   }
 }
