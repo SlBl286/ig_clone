@@ -4,7 +4,7 @@ import 'package:nylo_framework/nylo_framework.dart';
 
 class LoadingSpinner extends StatefulWidget {
   final bool stop;
-  LoadingSpinner ({this.stop = false});
+  LoadingSpinner({this.stop = false});
   @override
   _LoadingSpinnerState createState() => _LoadingSpinnerState();
 }
@@ -20,9 +20,16 @@ class _LoadingSpinnerState extends NyState<LoadingSpinner>
         AnimationController(duration: Duration(milliseconds: 500), vsync: this);
     curve = CurvedAnimation(parent: loadingController, curve: Curves.easeInOut);
     loadingAnimation = Tween<double>(begin: 0, end: 1).animate(curve);
-   if(!widget.stop) loadingController.repeat();
+    loadingController.repeat();
 
     super.init();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    loadingController.dispose();
+    super.dispose();
   }
 
   @override

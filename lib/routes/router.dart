@@ -1,10 +1,12 @@
 import 'package:ig_clone/resources/pages/chat_list_page.dart';
+import 'package:ig_clone/resources/pages/chat_page.dart';
 import 'package:ig_clone/resources/pages/custom_image_picker_page.dart';
 import 'package:ig_clone/resources/pages/first_page.dart';
 import 'package:ig_clone/resources/pages/home_page.dart';
 import 'package:ig_clone/resources/pages/login_page.dart';
 import 'package:ig_clone/resources/pages/profile_edit_page.dart';
 import 'package:ig_clone/resources/pages/search_page.dart';
+import 'package:ig_clone/resources/pages/setting_page.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -36,4 +38,8 @@ appRouter() => nyRoutes((router) {
       router.route(
           CustomImagePickerPage.route, (context) => CustomImagePickerPage(),
           transition: PageTransitionType.bottomToTop);
+      router.route(SettingPage.route, (context) => SettingPage(),
+          transition: PageTransitionType.rightToLeft);
+      router.route(ChatPage.route, (context) => ChatPage(),
+          transition: PageTransitionType.rightToLeft);
     });

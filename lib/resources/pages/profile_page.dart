@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ig_clone/app/models/user.dart';
 import 'package:ig_clone/resources/pages/profile_edit_page.dart';
+import 'package:ig_clone/resources/pages/setting_page.dart';
 import 'package:ig_clone/resources/widgets/story_widget.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import '../../app/controllers/profile_controller.dart';
@@ -35,7 +36,7 @@ class _ProfilePageState extends NyState<ProfilePage>
   Widget build(BuildContext context) {
     return ScrollConfiguration(
       behavior: const MaterialScrollBehavior(
-          androidOverscrollIndicator: AndroidOverscrollIndicator.stretch), 
+          androidOverscrollIndicator: AndroidOverscrollIndicator.stretch),
       child: CustomScrollView(
         slivers: [
           SliverAppBar(
@@ -78,7 +79,136 @@ class _ProfilePageState extends NyState<ProfilePage>
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 20),
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    showModalBottomSheet(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        context: context,
+                        builder: (context) => Container(
+                              color: Theme.of(context).backgroundColor,
+                              height: 220,
+                              child: Column(
+                                children: [
+                                  Container(
+                                    child: SvgPicture.asset(
+                                        getImageAsset('icons/minus.svg'),
+                                        color: Theme.of(context).primaryColor,
+                                        width: 40),
+                                  ),
+                                  InkWell(
+                                    onTap: () async {
+                                      pop();
+                                      Future.delayed(
+                                          Duration(milliseconds: 500), () {
+                                        routeTo(SettingPage.route);
+                                      });
+                                    },
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 20, vertical: 10),
+                                      child: Row(children: [
+                                        SvgPicture.asset(
+                                            getImageAsset('icons/settings.svg'),
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            height: 25),
+                                        SizedBox(width: 15),
+                                        Text(
+                                          'Cài đặt',
+                                          style: TextStyle(
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ]),
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 20, vertical: 10),
+                                      child: Row(children: [
+                                        SvgPicture.asset(
+                                            getImageAsset(
+                                                'icons/story_save.svg'),
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            height: 25),
+                                        SizedBox(width: 15),
+                                        Text(
+                                          'Lưu trữ',
+                                          style: TextStyle(
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ]),
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 20, vertical: 10),
+                                      child: Row(children: [
+                                        SvgPicture.asset(
+                                            getImageAsset('icons/bookmark.svg'),
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            height: 25),
+                                        SizedBox(width: 15),
+                                        Text(
+                                          'Đã lưu',
+                                          style: TextStyle(
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ]),
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 20, vertical: 10),
+                                      child: Row(children: [
+                                        SvgPicture.asset(
+                                            getImageAsset('icons/star.svg'),
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            height: 25),
+                                        SizedBox(width: 15),
+                                        Text(
+                                          'Yêu thích',
+                                          style: TextStyle(
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ]),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ));
+                  },
                   child: SvgPicture.asset(
                     getImageAsset(
                       'icons/more_line.svg',

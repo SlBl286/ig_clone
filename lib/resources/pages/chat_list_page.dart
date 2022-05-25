@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import '../../app/controllers/chat_list_controller.dart';
 
@@ -23,12 +24,24 @@ class _ChatListPageState extends NyState<ChatListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: SafeArea(
-          child: Container(
-        child: Text("chat list page"),
-      )),
-    );
+    return ScrollConfiguration(
+        behavior: MaterialScrollBehavior(
+            androidOverscrollIndicator: AndroidOverscrollIndicator.stretch),
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              title: Text(
+                '',
+                style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).primaryColor),
+              ),
+              actions: [],
+            )
+          ],
+        ));
   }
 }
+
+

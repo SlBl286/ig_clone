@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ig_clone/resources/pages/chat_list_page.dart';
+import 'package:ig_clone/resources/pages/chat_page.dart';
 import 'package:ig_clone/resources/widgets/post_widget.dart';
 import 'package:ig_clone/resources/widgets/story_widget.dart';
 import 'package:nylo_framework/nylo_framework.dart';
@@ -40,22 +41,27 @@ class _FeedsPageState extends NyState<FeedsPage> {
                   color: Theme.of(context).primaryColor),
             ),
             actions: [
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 10),
-                child: SvgPicture.asset(
-                  getImageAsset(
-                    'icons/add.svg',
+              InkWell(
+                onTap: () {
+                 routeTo(ChatPage.route);
+                },
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 10),
+                  child: SvgPicture.asset(
+                    getImageAsset(
+                      'icons/add.svg',
+                    ),
+                    width: 28,
+                    color: Theme.of(context).primaryColor,
                   ),
-                  width: 28,
-                  color: Theme.of(context).primaryColor,
                 ),
               ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                child: InkWell(
-                  onTap: () {
-                    routeTo(ChatListPage.route);
-                  },
+              InkWell(
+                onTap: () {
+                  routeTo(ChatListPage.route);
+                },
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20),
                   child: SvgPicture.asset(
                     getImageAsset(
                       'icons/chat.svg',
