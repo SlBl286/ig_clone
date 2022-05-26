@@ -148,14 +148,28 @@ class _SettingPageState extends NyState<SettingPage> {
                           SizedBox(height: 20),
                           InkWell(
                             onTap: () {
-                              DialogUtils.optionDialog(context,
-                                  okText: "Đăng xuất",
-                                  cancelText: "Huỷ",
-                                  content: "Đăng xuất khỏi IGCLONE?", onOk: () {
-                                Navigator.of(context)
-                                    .pushReplacementNamed(LoginPage.route);
-                              }, onCancel: () {});
-                              routeTo(LoginPage.route);
+                              showDialog(
+                                  barrierDismissible: false,
+                                  context: context,
+                                  builder: (context) => Dialog(
+                                        backgroundColor:
+                                            Theme.of(context).backgroundColor,
+                                        shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(15.0))),
+                                        child: Container(
+                                          width: 150,
+                                          height: 100,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text("Đăng xuất khỏi ig_clone?"),
+                                            ],
+                                          ),
+                                        ),
+                                      ));
+                              // routeTo(LoginPage.route);
                             },
                             child: Container(
                               width: MediaQuery.of(context).size.width,

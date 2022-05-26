@@ -151,9 +151,7 @@ class _ShortVideoState extends NyState<ShortVideo>
                                 child: VideoPlayer(_videoController)),
                           ),
                         )
-                      : LoadingSpinner(
-                          stop: !_videoController.value.isInitialized,
-                        ),
+                      : LoadingSpinner(),
                 ),
               ),
               Positioned(

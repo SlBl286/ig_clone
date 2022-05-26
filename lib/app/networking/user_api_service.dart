@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -26,5 +27,18 @@ class UserApiService extends BaseApiService {
   Future<User?> updateMe(UserUpdateDto dto) async {
     return await network<User>(
         request: (request) => request.put("/users/me", data: dto.toJson()));
+  }
+
+  Future updateAvatar(File file) async {
+    final random = Random();
+    final name = '${random.nextInt(1000000)}';
+    final path = 'avatars/$name';
+    final url = 'users/avatar';
+    final formData = FormData.fromMap({
+      'media': await MultipartFile.fromFile(file.path, filename: name),
+    });
+    return await network<User>(
+      request: (request) => request.put(url, data: formData),
+    );
   }
 }

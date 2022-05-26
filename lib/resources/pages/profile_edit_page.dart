@@ -73,6 +73,7 @@ class _ProfileEditPageState extends NyState<ProfileEditPage> {
                 child: TextButton(
                   onPressed: () {
                     FocusScope.of(context).unfocus();
+                    pop();
                     routeTo(CustomImagePickerPage.route);
                   },
                   child: Container(
@@ -194,6 +195,7 @@ class _ProfileEditPageState extends NyState<ProfileEditPage> {
                   TextButton(
                     onPressed: () {
                       FocusScope.of(context).unfocus();
+
                       showAvatarPickerDialog(context);
                     },
                     child: Text(

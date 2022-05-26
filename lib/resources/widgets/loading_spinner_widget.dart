@@ -3,8 +3,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 class LoadingSpinner extends StatefulWidget {
-  final bool stop;
-  LoadingSpinner({this.stop = false});
+  Color? color;
+  double? size;
+  LoadingSpinner({Key? key, this.color,this.size}) : super(key: key);
   @override
   _LoadingSpinnerState createState() => _LoadingSpinnerState();
 }
@@ -39,8 +40,8 @@ class _LoadingSpinnerState extends NyState<LoadingSpinner>
         turns: loadingAnimation,
         child: SvgPicture.asset(
           getImageAsset('icons/spinner.svg'),
-          height: 50,
-          color: Colors.white.withAlpha(100),
+          height: widget.size?? 50,
+          color: widget.color ?? Colors.white.withAlpha(100),
         ),
       ),
     );
