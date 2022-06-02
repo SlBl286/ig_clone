@@ -12,7 +12,10 @@ class LoginController extends Controller {
   }
 
   Future<String> login(String email, String password) async {
-    var res = await _authApiService.sigin(email, password);
-    return res['access_token']; 
+    var res = await _authApiService.sigin(email, password).catchError((e) {
+      print(e);
+    });
+    print(res);
+    return res['access_token'];
   }
 }

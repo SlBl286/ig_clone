@@ -15,4 +15,9 @@ class CdnApiService extends BaseApiService {
       request: (request) => request.post('cdn/uplaod'),
     );
   }
+  Future<dynamic> getAvatar(String fileName) async {
+    return await network(
+      request: (request) => request.get('cdn/$fileName'),
+    );
+  }
 }

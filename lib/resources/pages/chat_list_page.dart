@@ -30,6 +30,7 @@ class _ChatListPageState extends NyState<ChatListPage> {
         child: CustomScrollView(
           slivers: [
             SliverAppBar(
+              automaticallyImplyLeading: false,
               title: Text(
                 '',
                 style: TextStyle(
@@ -38,10 +39,15 @@ class _ChatListPageState extends NyState<ChatListPage> {
                     color: Theme.of(context).primaryColor),
               ),
               actions: [],
+            ),
+            SliverToBoxAdapter(
+              child: Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                color: Colors.red,
+              ),
             )
           ],
         ));
   }
 }
-
-

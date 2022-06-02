@@ -35,7 +35,9 @@ class _CustomImagePickerPageState extends NyState<CustomImagePickerPage> {
     required Future<File?> Function(File) crop,
   }) async {
     final source = isGallery ? ImageSource.gallery : ImageSource.camera;
-    final pickedFile = await ImagePicker().pickImage(source: source);
+    final pickedFile = await ImagePicker().pickImage(
+      source: source,
+    );
 
     if (pickedFile == null) {
       return null;
@@ -128,9 +130,12 @@ class _CustomImagePickerPageState extends NyState<CustomImagePickerPage> {
               Stack(
                 children: [
                   _image != null
-                      ? Image.file(
-                          _image!,
-                          fit: BoxFit.contain,
+                      ? Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: Image.file(
+                            _image!,
+                            fit: BoxFit.fitWidth,
+                          ),
                         )
                       : Container(
                           width: MediaQuery.of(context).size.width,

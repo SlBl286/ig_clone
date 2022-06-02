@@ -16,8 +16,17 @@ class LoginPage extends NyStatefulWidget {
 }
 
 class _LoginPageState extends NyState<LoginPage> {
+  String? _email;
+  String? _password;
+  TextEditingController? _emailController;
+  TextEditingController? _passwordController;
   @override
-  init() async {}
+  init() async {
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+
+    super.init();
+  }
 
   @override
   void dispose() {
@@ -66,6 +75,14 @@ class _LoginPageState extends NyState<LoginPage> {
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 10),
                     child: TextField(
+                      controller: _emailController,
+                      onChanged: (value) {
+                        if (value.isNotEmpty) {
+                          _email = value;
+                        } else {
+                          _email = null;
+                        }
+                      },
                       decoration: InputDecoration(
                         hintText: "Email",
                         hintStyle: TextStyle(color: Colors.white),
@@ -82,6 +99,14 @@ class _LoginPageState extends NyState<LoginPage> {
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 10),
                     child: TextField(
+                      controller: _passwordController,
+                      onChanged: (value) {
+                        if (value.isNotEmpty) {
+                          _password = value;
+                        } else {
+                          _password = null;
+                        }
+                      },
                       decoration: InputDecoration(
                         hintText: "Password",
                         hintStyle: TextStyle(color: Colors.white),
@@ -109,15 +134,19 @@ class _LoginPageState extends NyState<LoginPage> {
                     child: RaisedButton(
                       color: Colors.white,
                       onPressed: () async {
-                        var token = await widget.controller
-                            .login("quy.doanduy@gmail.com", "220287");
-                        print(token);
-                        if (token != null) {
-                          event<LoginEvent>(data: {
-                            "user_token": token,
-                          });
-                          routeTo(MyHomePage.route,
-                              navigationType: NavigationType.pushReplace);
+                        if (_email == null || _password == null) {
+                          print("Email or password is empty");
+                        } else {
+                          var token = await widget.controller
+                              .login(_email!, _password!);
+                          print(token);
+                          if (token != null) {
+                            event<LoginEvent>(data: {
+                              "user_token": token,
+                            });
+                            routeTo(MyHomePage.route,
+                                navigationType: NavigationType.pushReplace);
+                          }
                         }
                       },
                       child: Text(

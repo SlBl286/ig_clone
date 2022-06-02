@@ -22,6 +22,11 @@ class _ProfileEditPageState extends NyState<ProfileEditPage> {
   String? _website;
   String? _bio;
   User? _user;
+  TextEditingController? _nameController;
+  TextEditingController? _nickNameController;
+  TextEditingController? _websiteController;
+  TextEditingController? _bioController;
+
   @override
   init() async {
     _user = await widget.controller.getUser();
@@ -31,6 +36,12 @@ class _ProfileEditPageState extends NyState<ProfileEditPage> {
       _website = _user?.website;
       _bio = _user?.bio;
     });
+    _nameController = TextEditingController(text: _name);
+    _nickNameController = TextEditingController(text: _nickName);
+    _websiteController = TextEditingController(text: _website);
+    _bioController = TextEditingController(text: _bio);
+
+    super.init();
   }
 
   @override
@@ -216,8 +227,7 @@ class _ProfileEditPageState extends NyState<ProfileEditPage> {
                     Container(
                       padding: EdgeInsets.symmetric(vertical: 10),
                       child: TextField(
-                        controller:
-                            TextEditingController(text: _user?.name ?? ""),
+                        controller: _nameController,
                         onChanged: (text) {
                           setState(() {
                             if (text.isEmpty) _name = null;
@@ -245,8 +255,7 @@ class _ProfileEditPageState extends NyState<ProfileEditPage> {
                     Container(
                       padding: EdgeInsets.symmetric(vertical: 10),
                       child: TextField(
-                        controller:
-                            TextEditingController(text: _user?.nickname ?? ""),
+                        controller: _nickNameController,
                         onChanged: (text) {
                           setState(() {
                             if (text.isEmpty) _nickName = null;
@@ -274,8 +283,7 @@ class _ProfileEditPageState extends NyState<ProfileEditPage> {
                     Container(
                       padding: EdgeInsets.symmetric(vertical: 10),
                       child: TextField(
-                        controller:
-                            TextEditingController(text: _user?.website ?? ""),
+                        controller: _websiteController,
                         onChanged: (text) {
                           setState(() {
                             if (text.isEmpty) _website = null;
@@ -303,12 +311,13 @@ class _ProfileEditPageState extends NyState<ProfileEditPage> {
                     Container(
                       padding: EdgeInsets.symmetric(vertical: 10),
                       child: TextField(
-                        controller:
-                            TextEditingController(text: _user?.bio ?? ""),
+                        controller: _bioController,
                         onChanged: (text) {
                           setState(() {
-                            if (text.isEmpty) _bio = null;
-                            _bio = text;
+                            if (text.isEmpty)
+                              _bio = null;
+                            else
+                              _bio = text;
                           });
                         },
                         decoration: InputDecoration(

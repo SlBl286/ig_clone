@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ig_clone/app/models/user.dart';
 import 'package:ig_clone/resources/pages/profile_edit_page.dart';
 import 'package:ig_clone/resources/pages/setting_page.dart';
+import 'package:ig_clone/resources/widgets/loading_spinner_widget.dart';
 import 'package:ig_clone/resources/widgets/story_widget.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import '../../app/controllers/profile_controller.dart';
@@ -19,12 +20,14 @@ class ProfilePage extends NyStatefulWidget {
 class _ProfilePageState extends NyState<ProfilePage>
     with TickerProviderStateMixin {
   User? _user;
+  String? _userToken = "";
   late TabController _tabController;
   bool? _onPopReload;
   @override
   init() async {
     _tabController = TabController(length: 3, vsync: this);
     _user = await widget.controller.getUser();
+    _userToken = await NyStorage.read('user_token');
     setState(() {});
   }
 
@@ -239,9 +242,33 @@ class _ProfilePageState extends NyState<ProfilePage>
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(50),
                           ),
-                          child: Image.asset(
-                            getImageAsset('icons/man_no_avatar.png'),
-                          ),
+                          child: _user != null
+                              ? _user!.avatar != null
+                                  ? Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(50),
+                                        image: DecorationImage(
+                                          image: NetworkImage(
+                                              getEnv("API_BASE_URL") +
+                                                  "cdn/" +
+                                                  _user!.avatar!,
+                                              headers: {
+                                                'Authorization':
+                                                    'Bearer ' + _userToken!,
+                                              }),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    )
+                                  : Image.asset(
+                                      getImageAsset('icons/man_no_avatar.png'),
+                                    )
+                              : Container(
+                                  child: LoadingSpinner(
+                                    size: 20,
+                                    color: Colors.grey,
+                                  ),
+                                ),
                         ),
                       ),
                       Flexible(

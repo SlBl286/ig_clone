@@ -1,8 +1,11 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:ig_clone/app/utils/dialog.dart';
+import 'package:ig_clone/app/events/logout_event.dart';
+import 'package:ig_clone/bootstrap/helpers.dart';
 import 'package:ig_clone/resources/pages/login_page.dart';
-import 'package:ig_clone/resources/widgets/menu_item_widget.dart';
+import 'package:ig_clone/resources/widgets/menu_item_widget.dart'
+    as menu_item_widget;
 import 'package:nylo_framework/nylo_framework.dart';
 import '../../app/controllers/setting_controller.dart';
 
@@ -83,32 +86,32 @@ class _SettingPageState extends NyState<SettingPage> {
                     Container(
                       child: Column(
                         children: [
-                          MenuItem(
+                          menu_item_widget.MenuItem(
                             title: 'Thông báo',
                             svgAsset: getImageAsset('icons/bell.svg'),
                             onTap: () {},
                           ),
-                          MenuItem(
+                          menu_item_widget.MenuItem(
                             title: 'Quyền riêng tư',
                             svgAsset: getImageAsset('icons/lock.svg'),
                             onTap: () {},
                           ),
-                          MenuItem(
+                          menu_item_widget.MenuItem(
                             title: 'Bảo mật',
                             svgAsset: getImageAsset('icons/security.svg'),
                             onTap: () {},
                           ),
-                          MenuItem(
+                          menu_item_widget.MenuItem(
                             title: 'Tài khoản',
                             svgAsset: getImageAsset('icons/user.svg'),
                             onTap: () {},
                           ),
-                          MenuItem(
+                          menu_item_widget.MenuItem(
                             title: 'Giới thiệu',
                             svgAsset: getImageAsset('icons/info.svg'),
                             onTap: () {},
                           ),
-                          MenuItem(
+                          menu_item_widget.MenuItem(
                             title: 'Chủ đề',
                             svgAsset: getImageAsset('icons/theme.svg'),
                             onTap: () {},
@@ -159,12 +162,53 @@ class _SettingPageState extends NyState<SettingPage> {
                                                 Radius.circular(15.0))),
                                         child: Container(
                                           width: 150,
-                                          height: 100,
+                                          height: 120,
+                                          padding: EdgeInsets.all(20),
                                           child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
                                             children: [
-                                              Text("Đăng xuất khỏi ig_clone?"),
+                                              Expanded(
+                                                  child: Text(
+                                                "Đăng xuất khỏi ig_clone?",
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Theme.of(context)
+                                                        .primaryColor),
+                                              )),
+                                              Expanded(
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    FlatButton(
+                                                      onPressed: () {
+                                                        pop();
+                                                      },
+                                                      child: Text(
+                                                        "Hủy",
+                                                        style: TextStyle(
+                                                            color: Colors.grey),
+                                                      ),
+                                                    ),
+                                                    MaterialButton(
+                                                      onPressed: () {
+                                                        pop();
+                                                        pop();
+                                                        routeTo(LoginPage.route,
+                                                            navigationType:
+                                                                NavigationType
+                                                                    .pushReplace);
+                                                        event<LogoutEvent>();
+                                                      },
+                                                      child: Text(
+                                                        "Đồng ý",
+                                                        style: TextStyle(
+                                                            color: Colors.red),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
                                             ],
                                           ),
                                         ),

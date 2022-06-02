@@ -1,6 +1,6 @@
 class User {
   late String? name;
-  late String email;
+  late String? email;
   late String? nickname;
   late String? avatar;
   late String? bio;

@@ -1,12 +1,15 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
-
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:ig_clone/app/models/dto/user_update_dto.dart';
 import 'package:ig_clone/app/models/user.dart';
 import 'package:ig_clone/app/networking/dio/base_api_service.dart';
 import 'package:ig_clone/app/networking/dio/interceptors/bearer_auth_interceptor.dart';
 import 'package:nylo_framework/nylo_framework.dart';
+import 'package:async/async.dart';
+import 'package:http_parser/http_parser.dart';
 
 class UserApiService extends BaseApiService {
   UserApiService({BuildContext? buildContext}) : super(buildContext);
@@ -30,15 +33,22 @@ class UserApiService extends BaseApiService {
   }
 
   Future updateAvatar(File file) async {
+    // var stream =
+    // new http.ByteStream(Stream.castFrom(file.openRead()));
     final random = Random();
     final name = '${random.nextInt(1000000)}';
-    final path = 'avatars/$name';
     final url = 'users/avatar';
+    var mediaType = file.path.split(".").last == "jpeg"
+        ? MediaType('image', 'jpeg')
+        : MediaType('image', 'png');
     final formData = FormData.fromMap({
-      'media': await MultipartFile.fromFile(file.path, filename: name),
+      'image': await MultipartFile.fromFile(file.path,
+          filename: name, contentType: mediaType),
     });
     return await network<User>(
-      request: (request) => request.put(url, data: formData),
-    );
+      request: (request) => request.post(url, data: formData),
+    ).catchError((error) {
+      print(error);
+    });
   }
 }

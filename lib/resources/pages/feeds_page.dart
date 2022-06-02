@@ -8,9 +8,11 @@ import 'package:nylo_framework/nylo_framework.dart';
 import '../../app/controllers/feeds_controller.dart';
 
 class FeedsPage extends NyStatefulWidget {
+  static const String route = '/feeds_page';
+  Function? routeToChatList;
   final FeedsController controller = FeedsController();
 
-  FeedsPage({Key? key}) : super(key: key);
+  FeedsPage({Key? key, this.routeToChatList}) : super(key: key);
 
   @override
   _FeedsPageState createState() => _FeedsPageState();
@@ -43,7 +45,7 @@ class _FeedsPageState extends NyState<FeedsPage> {
             actions: [
               InkWell(
                 onTap: () {
-                 routeTo(ChatPage.route);
+                  routeTo(ChatPage.route);
                 },
                 child: Container(
                   margin: EdgeInsets.symmetric(horizontal: 10),
@@ -58,7 +60,7 @@ class _FeedsPageState extends NyState<FeedsPage> {
               ),
               InkWell(
                 onTap: () {
-                  routeTo(ChatListPage.route);
+                  if (widget.routeToChatList != null) widget.routeToChatList!();
                 },
                 child: Container(
                   margin: EdgeInsets.symmetric(horizontal: 20),
