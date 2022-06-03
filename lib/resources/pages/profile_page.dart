@@ -280,7 +280,9 @@ class _ProfilePageState extends NyState<ProfilePage>
                               width: 80,
                               child: Column(children: [
                                 Text(
-                                  "10",
+                                  _user != null
+                                      ? _user!.followers!.length.toString()
+                                      : "10",
                                   style: TextStyle(
                                     color: Theme.of(context).primaryColor,
                                     fontSize: 20,
@@ -300,7 +302,9 @@ class _ProfilePageState extends NyState<ProfilePage>
                               child: Column(
                                 children: [
                                   Text(
-                                    "10k",
+                                    _user != null
+                                        ? _user!.followers!.length.toString()
+                                        : "10k",
                                     style: TextStyle(
                                       color: Theme.of(context).primaryColor,
                                       fontSize: 20,
@@ -321,7 +325,9 @@ class _ProfilePageState extends NyState<ProfilePage>
                               width: 80,
                               child: Column(children: [
                                 Text(
-                                  "1",
+                                  _user != null
+                                      ? _user!.followers!.length.toString()
+                                      : "1",
                                   style: TextStyle(
                                     color: Theme.of(context).primaryColor,
                                     fontSize: 20,
@@ -434,6 +440,7 @@ class _ProfilePageState extends NyState<ProfilePage>
                       TabBar(
                         indicatorColor: Theme.of(context).primaryColor,
                         controller: _tabController,
+                        
                         tabs: [
                           Tab(
                             child: SvgPicture.asset(
@@ -462,10 +469,35 @@ class _ProfilePageState extends NyState<ProfilePage>
                         child: TabBarView(
                           controller: _tabController,
                           children: [
-                            Center(
-                              child: SvgPicture.asset(
-                                getImageAsset('icons/gallery.svg'),
-                                width: 100,
+                            Container(
+                              child: GridView.count(
+                                primary: false,
+                                crossAxisSpacing: 2,
+                                mainAxisSpacing: 2,
+                                crossAxisCount: 3,
+                                clipBehavior: Clip.antiAlias,
+                                children: [
+                                  Container(
+                                    child: Image.asset(
+                                      getImageAsset('1308931.jpg'),
+                                    ),
+                                  ),
+                                  Container(
+                                    child: Image.asset(
+                                      getImageAsset('1308931.jpg'),
+                                    ),
+                                  ),
+                                  Container(
+                                    child: Image.asset(
+                                      getImageAsset('1308931.jpg'),
+                                    ),
+                                  ),
+                                  Container(
+                                    child: Image.asset(
+                                      getImageAsset('1308931.jpg'),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                             Center(
