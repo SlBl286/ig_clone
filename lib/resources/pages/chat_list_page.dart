@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nylo_framework/nylo_framework.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 import '../../app/controllers/chat_list_controller.dart';
 
 class ChatListPage extends NyStatefulWidget {
@@ -14,8 +15,12 @@ class ChatListPage extends NyStatefulWidget {
 }
 
 class _ChatListPageState extends NyState<ChatListPage> {
+  
   @override
-  init() async {}
+  init() async {
+    super.init();
+   
+  }
 
   @override
   void dispose() {

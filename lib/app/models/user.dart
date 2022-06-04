@@ -18,9 +18,11 @@ class User {
     this.bio = data['bio'];
     this.website = data['website'];
 
-    this.followers = data['followers'].cast<int>();
-    this.following = data['following'].cast<int>();
-    this.posts = data['posts'].cast<int>();
+    this.followers =
+        data['followers'] != null ? data['followers'].cast<int>() : null;
+    this.following =
+        data['following'] != null ? data['following'].cast<int>() : null;
+    this.posts = data['followers'] != null ? data['posts'].cast<int>() : null;
     this.gender = data['gender'] ?? 0;
   }
 
