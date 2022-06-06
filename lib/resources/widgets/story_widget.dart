@@ -115,6 +115,7 @@ class _StoryState extends NyState<Story> {
                           child: Icon(
                             Icons.add,
                             size: 20,
+                            color: Theme.of(context).primaryColor,
                           ),
                         ))
                   ],

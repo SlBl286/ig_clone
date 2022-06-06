@@ -13,10 +13,6 @@ class CustomImagePickerController extends Controller {
     super.construct(context);
   }
 
-  Future<Files> getFiles() async {
-    return await Files.fromJson({});
-  }
-
   Future<User?> updateAvatar(File media) async {
     var updatedUser = await _userApiService.updateAvatar(media);
     return updatedUser;

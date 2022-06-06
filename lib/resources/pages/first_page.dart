@@ -4,6 +4,7 @@ import 'package:ig_clone/bootstrap/helpers.dart';
 import 'package:ig_clone/resources/pages/home_page.dart';
 import 'package:ig_clone/resources/pages/login_page.dart';
 import 'package:nylo_framework/nylo_framework.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../app/controllers/first_controller.dart';
 
 class FirstPage extends NyStatefulWidget {
@@ -19,19 +20,22 @@ class _FirstPageState extends NyState<FirstPage> {
   @override
   init() async {
     await super.init();
+    var status = await Permission.storage.status;
+
+    if(status.isDenied){
+      await Permission.storage.request();
+    }
     String? keyExpireDay = await NyStorage.read("key_expire_day");
     if (keyExpireDay != null) {
       if (DateTime.parse(keyExpireDay).isAfter(DateTime.now())) {
         routeTo(MyHomePage.route, navigationType: NavigationType.pushReplace);
       } else {
         event<LogoutEvent>();
-            routeTo(LoginPage.route, navigationType: NavigationType.pushReplace);
-      }}
-      else{
-            routeTo(LoginPage.route, navigationType: NavigationType.pushReplace);
+        routeTo(LoginPage.route, navigationType: NavigationType.pushReplace);
       }
-    
-
+    } else {
+      routeTo(LoginPage.route, navigationType: NavigationType.pushReplace);
+    }
   }
 
   @override

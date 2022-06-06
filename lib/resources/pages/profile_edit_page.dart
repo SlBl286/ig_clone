@@ -4,7 +4,6 @@ import 'package:ig_clone/app/models/dto/user_update_dto.dart';
 import 'package:ig_clone/app/models/user.dart';
 import 'package:ig_clone/resources/pages/custom_image_picker_page.dart';
 import 'package:nylo_framework/nylo_framework.dart';
-import 'package:socket_io_client/socket_io_client.dart';
 import '../../app/controllers/profile_edit_controller.dart';
 
 class ProfileEditPage extends NyStatefulWidget {
@@ -27,7 +26,6 @@ class _ProfileEditPageState extends NyState<ProfileEditPage> {
   TextEditingController? _nickNameController;
   TextEditingController? _websiteController;
   TextEditingController? _bioController;
-  late Socket _socket;
   @override
   init() async {
     _user = await widget.controller.getUser();
@@ -45,28 +43,8 @@ class _ProfileEditPageState extends NyState<ProfileEditPage> {
     super.init();
   }
 
-  Future<void> initSocket() async {
-    try {
-      _socket = io(
-          "wss://192.168.1.40:2203",
-          OptionBuilder()
-              .setPath('/socket')
-              .setTransports(['websocket'])
-              .disableAutoConnect()
-              .build());
-      _socket.connect().onConnectError((data) => print(data));
-      _socket.onConnect((data) {
-        print('connected');
-      });
-      print(_socket.connected);
-    } catch (e) {
-      print(e);
-    }
-  }
-
   @override
   void dispose() {
-    _socket.disconnect();
     super.dispose();
   }
 
@@ -106,7 +84,7 @@ class _ProfileEditPageState extends NyState<ProfileEditPage> {
                   onPressed: () {
                     FocusScope.of(context).unfocus();
                     pop();
-                    routeTo(CustomImagePickerPage.route);
+                    routeTo(CustomImagePickerPage.route, data: _user!.avatar);
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width,
@@ -176,7 +154,7 @@ class _ProfileEditPageState extends NyState<ProfileEditPage> {
                 children: [
                   IconButton(
                     onPressed: () {
-                      initSocket();
+                      pop();
                     },
                     icon: Icon(
                       Icons.close,

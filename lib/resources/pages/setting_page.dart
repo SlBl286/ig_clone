@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ig_clone/app/events/logout_event.dart';
@@ -31,9 +30,11 @@ class _SettingPageState extends NyState<SettingPage> {
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: ScrollConfiguration(
-        behavior: const MaterialScrollBehavior(
-            androidOverscrollIndicator: AndroidOverscrollIndicator.stretch),
+      child: Theme(
+        data: ThemeData(
+            useMaterial3: true,
+            primaryColor: Theme.of(context).primaryColor,
+            appBarTheme: Theme.of(context).appBarTheme),
         child: CustomScrollView(
           slivers: [
             SliverAppBar(
@@ -152,68 +153,68 @@ class _SettingPageState extends NyState<SettingPage> {
                           InkWell(
                             onTap: () {
                               showDialog(
-                                  barrierDismissible: false,
-                                  context: context,
-                                  builder: (context) => Dialog(
-                                        backgroundColor:
-                                            Theme.of(context).backgroundColor,
-                                        shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(15.0))),
-                                        child: Container(
-                                          width: 150,
-                                          height: 120,
-                                          padding: EdgeInsets.all(20),
-                                          child: Column(
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (context) => Dialog(
+                                  backgroundColor:
+                                      Theme.of(context).backgroundColor,
+                                  shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(15.0))),
+                                  child: Container(
+                                    width: 150,
+                                    height: 120,
+                                    padding: EdgeInsets.all(20),
+                                    child: Column(
+                                      children: [
+                                        Expanded(
+                                            child: Text(
+                                          "Đăng xuất khỏi ig_clone?",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: Theme.of(context)
+                                                  .primaryColor),
+                                        )),
+                                        Expanded(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
                                             children: [
-                                              Expanded(
-                                                  child: Text(
-                                                "Đăng xuất khỏi ig_clone?",
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Theme.of(context)
-                                                        .primaryColor),
-                                              )),
-                                              Expanded(
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    FlatButton(
-                                                      onPressed: () {
-                                                        pop();
-                                                      },
-                                                      child: Text(
-                                                        "Hủy",
-                                                        style: TextStyle(
-                                                            color: Colors.grey),
-                                                      ),
-                                                    ),
-                                                    MaterialButton(
-                                                      onPressed: () {
-                                                        pop();
-                                                        pop();
-                                                        routeTo(LoginPage.route,
-                                                            navigationType:
-                                                                NavigationType
-                                                                    .pushReplace);
-                                                        event<LogoutEvent>();
-                                                      },
-                                                      child: Text(
-                                                        "Đồng ý",
-                                                        style: TextStyle(
-                                                            color: Colors.red),
-                                                      ),
-                                                    ),
-                                                  ],
+                                              MaterialButton(
+                                                onPressed: () {
+                                                  pop();
+                                                },
+                                                child: Text(
+                                                  "Hủy",
+                                                  style: TextStyle(
+                                                      color: Colors.grey),
                                                 ),
-                                              )
+                                              ),
+                                              MaterialButton(
+                                                onPressed: () {
+                                                  pop();
+                                                  pop();
+                                                  routeTo(LoginPage.route,
+                                                      navigationType:
+                                                          NavigationType
+                                                              .pushReplace);
+                                                  event<LogoutEvent>();
+                                                },
+                                                child: Text(
+                                                  "Đồng ý",
+                                                  style: TextStyle(
+                                                      color: Colors.red),
+                                                ),
+                                              ),
                                             ],
                                           ),
-                                        ),
-                                      ));
-                              // routeTo(LoginPage.route);
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
                             },
                             child: Container(
                               width: MediaQuery.of(context).size.width,
