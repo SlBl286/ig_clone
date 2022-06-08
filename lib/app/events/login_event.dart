@@ -9,9 +9,13 @@ class LoginEvent implements NyEvent {
 
 class DefaultListener extends NyListener {
   handle(dynamic event) async {
-    String user_token = event['user_token'];
-    await NyStorage.store('user_token', user_token);
-    await NyStorage.store('key_expire_day',
-        DateTime.now().add(Duration(days: 7)).toIso8601String());
+    if (event['user_token'] != null) {
+      String user_token = event['user_token'];
+      await NyStorage.store('user_token', user_token);
+      await NyStorage.store('key_expire_day',
+          DateTime.now().add(Duration(days: 7)).toIso8601String());
+    }
   }
 }
+
+

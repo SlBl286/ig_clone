@@ -1,5 +1,6 @@
 import 'package:ig_clone/app/events/login_event.dart';
 import 'package:ig_clone/app/events/logout_event.dart';
+import 'package:ig_clone/app/events/save_user_event.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 /*
@@ -15,4 +16,5 @@ import 'package:nylo_framework/nylo_framework.dart';
 final Map<Type, NyEvent> events = {
   LoginEvent: LoginEvent(),
   LogoutEvent: LogoutEvent(),
+  SaveUserEvent: SaveUserEvent(),
 };

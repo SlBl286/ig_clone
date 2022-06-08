@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ig_clone/app/models/dto/user_update_dto.dart';
 import 'package:ig_clone/app/models/user.dart';
 import 'package:ig_clone/resources/pages/custom_image_picker_page.dart';
+import 'package:ig_clone/resources/widgets/loading_spinner_widget.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import '../../app/controllers/profile_edit_controller.dart';
 
@@ -26,6 +27,7 @@ class _ProfileEditPageState extends NyState<ProfileEditPage> {
   TextEditingController? _nickNameController;
   TextEditingController? _websiteController;
   TextEditingController? _bioController;
+  bool _updating = false;
   @override
   init() async {
     _user = await widget.controller.getUser();
@@ -171,6 +173,9 @@ class _ProfileEditPageState extends NyState<ProfileEditPage> {
                   ),
                   IconButton(
                     onPressed: () async {
+                      setState(() {
+                        _updating = true;
+                      });
                       var res = await widget.controller.updateUser(
                           UserUpdateDto.fromJson({
                         "name": _name,
@@ -182,11 +187,15 @@ class _ProfileEditPageState extends NyState<ProfileEditPage> {
                         pop();
                       }
                     },
-                    icon: Icon(
-                      Icons.done,
-                      color: Colors.blue,
-                      size: 30,
-                    ),
+                    icon: _updating
+                        ? LoadingSpinner(
+                            color: Colors.blue,
+                          )
+                        : Icon(
+                            Icons.done,
+                            color: Colors.blue,
+                            size: 30,
+                          ),
                   ),
                 ],
               ),

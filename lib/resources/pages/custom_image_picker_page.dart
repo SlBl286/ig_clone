@@ -1,6 +1,11 @@
+import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
+import 'dart:ui';
 import 'package:external_path/external_path.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:ig_clone/app/utils/folder.dart';
 import 'package:ig_clone/resources/widgets/loading_spinner_widget.dart';
 import 'package:ig_clone/resources/widgets/square_hole.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -24,14 +29,32 @@ class _CustomImagePickerPageState extends NyState<CustomImagePickerPage> {
   bool _uploading = false;
   String? _initImagePath;
   String? _userToken;
-  List<File?> _test = [];
+  late String _folderName;
+  dynamic _imageWidget;
+  // late Future<List<File>> _fileFuture;
   @override
   init() async {
     _userToken = await NyStorage.read('user_token');
     _initImagePath = await widget.data();
-    await getPath_2();
-    setState(() {});
+    _folderName = "Thư viện";
+    // _fileFuture = Future.value([]);
+    var a = Image.file(_image!);
+    var byteData =
+        await rootBundle.load(getImageAsset("icons/man_no_avatar.png"));
+    Uint8List lst = new Uint8List.view(byteData.buffer);
+    var codec =
+        await instantiateImageCodec(lst, targetHeight: 512, targetWidth: 512);
+    var nextFrame = await codec.getNextFrame();
+    _imageWidget = nextFrame.image;
+    var b = await ImageCropper.platform.cropImage(
+        sourcePath: _image!.path,
+        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+        maxWidth: 512,
+        maxHeight: 512,
+        compressFormat: ImageCompressFormat.png);
 
+    File(b!.path);
+    setState(() {});
     super.init();
   }
 
@@ -40,24 +63,23 @@ class _CustomImagePickerPageState extends NyState<CustomImagePickerPage> {
     super.dispose();
   }
 
-  Future<void> getPath_2() async {
-    var path = await ExternalPath.getExternalStoragePublicDirectory(
-        ExternalPath.DIRECTORY_DCIM);
-    print(path);
-    var picDir = Directory(path);
-
-    var picDirItems = await picDir.list(recursive: true).toList();
-
-    for (var element in picDirItems) {
-      if (element is File) {
-        var file = File(element.path);
-
-        file.path.contains('.png') || file.path.contains('.jpg')
-            ? _test.add(file)
-            : null;
-      }
-    }
-  }
+  // _reloadFile() async {
+  //   if (_folderName == "Thư viện") {
+  //     var dir = await ExternalPath.getExternalStoragePublicDirectory(
+  //         ExternalPath.DIRECTORY_DCIM);
+  //     setState(() {
+  //       _fileFuture =
+  //           Directory(dir).list(recursive: true).toList() as Future<List<File>>;
+  //     });
+  //   }
+  //   var isFolderExist = await Directory(_folderName).exists();
+  //   if (isFolderExist) {
+  //     setState(() {
+  //       _fileFuture = Directory(_folderName).list(recursive: false).toList()
+  //           as Future<List<File>>;
+  //     });
+  //   }
+  // }
 
   Future<File?> pickImage({
     required bool isGallery,
@@ -113,8 +135,55 @@ class _CustomImagePickerPageState extends NyState<CustomImagePickerPage> {
                           GestureDetector(
                             onTap: () {
                               showModalBottomSheet(
-                                  context: context,
-                                  builder: (context) => Container());
+                                context: context,
+                                builder: (context) => Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * 1.2,
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 10),
+                                  child: FutureBuilder<List<String>>(
+                                    future: FolderUtils.getFolderList(),
+                                    builder: ((context, snapshot) {
+                                      if (snapshot.hasData) {
+                                        return Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: snapshot.data!
+                                              .map((e) => GestureDetector(
+                                                    behavior: HitTestBehavior
+                                                        .translucent,
+                                                    onTap: () {
+                                                      setState(() {
+                                                        _folderName = e;
+                                                      });
+                                                    },
+                                                    child: Container(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                              .size
+                                                              .width,
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 20),
+                                                      child: Text(
+                                                        e,
+                                                        style: TextStyle(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                            fontSize: 14),
+                                                      ),
+                                                    ),
+                                                  ))
+                                              .toList(),
+                                        );
+                                      } else {
+                                        return LoadingSpinner();
+                                      }
+                                    }),
+                                  ),
+                                ),
+                              );
                             },
                             child: Row(
                               children: [
@@ -200,24 +269,13 @@ class _CustomImagePickerPageState extends NyState<CustomImagePickerPage> {
                 ),
                 Container(
                   height: MediaQuery.of(context).size.height,
-                  child: _test.length > 0
-                      ? GridView.count(
-                          crossAxisCount: 3,
-                          mainAxisSpacing: 3,
-                          crossAxisSpacing: 3,
-                          children: _test
-                              .map(
-                                (e) => Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    height: MediaQuery.of(context).size.width,
-                                    child: Image.file(
-                                      e!,
-                                      fit: BoxFit.fitWidth,
-                                    )),
-                              )
-                              .toList(),
-                        )
-                      : Container(),
+                  // child: FutureBuilder<List<File>>(
+                  //   future: _fileFuture,
+                  //   initialData: [],
+                  //   builder: (context, snapshot) {
+                  //     return Container();
+                  //   },
+                  // ),
                 ),
               ],
             ),
@@ -226,4 +284,5 @@ class _CustomImagePickerPageState extends NyState<CustomImagePickerPage> {
       ),
     );
   }
+  
 }

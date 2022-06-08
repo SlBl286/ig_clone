@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ig_clone/app/events/login_event.dart';
+import 'package:ig_clone/app/events/save_user_event.dart';
 import 'package:ig_clone/bootstrap/helpers.dart';
 import 'package:ig_clone/resources/pages/home_page.dart';
+import 'package:ig_clone/resources/pages/signup_page.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import '../../app/controllers/login_controller.dart';
 
@@ -144,6 +146,10 @@ class _LoginPageState extends NyState<LoginPage> {
                             event<LoginEvent>(data: {
                               "user_token": token,
                             });
+                            var user = await widget.controller.getUser();
+                            event<SaveUserEvent>(data: {
+                              "user": user,
+                            });
                             routeTo(MyHomePage.route,
                                 navigationType: NavigationType.pushReplace);
                           }
@@ -164,10 +170,18 @@ class _LoginPageState extends NyState<LoginPage> {
                           "Don't have an account? ",
                           style: TextStyle(color: Colors.white),
                         ),
-                        Text(
-                          " Sign up",
-                          style: TextStyle(
-                              color: Colors.blue, fontWeight: FontWeight.bold),
+                        GestureDetector(
+                          onTap: () => routeTo(SignupPage.route,
+                              navigationType: NavigationType.pushReplace),
+                          child: Container(
+                            color: Colors.red,
+                            child: Text(
+                              " Sign up",
+                              style: TextStyle(
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
                         ),
                       ],
                     ),

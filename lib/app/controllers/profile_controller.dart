@@ -1,5 +1,6 @@
 import 'package:ig_clone/app/models/user.dart';
 import 'package:ig_clone/app/networking/user_api_service.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 
 import 'controller.dart';
 import 'package:flutter/widgets.dart';
@@ -12,7 +13,8 @@ class ProfileController extends Controller {
   }
 
   Future<User?> getUser() async {
-    user = await _userApiService.me();
+    var res = await NyStorage.read('user');
+    user = User.fromJson(res);
     print(user!.toJson());
     return user;
   }

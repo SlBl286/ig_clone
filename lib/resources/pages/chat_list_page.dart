@@ -45,6 +45,7 @@ class _ChatListPageState extends NyState<ChatListPage> {
   @override
   void dispose() {
     _socket.disconnect();
+    _socket.destroy();
     super.dispose();
   }
 

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ig_clone/app/models/user.dart';
@@ -26,9 +27,10 @@ class _ProfilePageState extends NyState<ProfilePage>
   @override
   init() async {
     _tabController = TabController(length: 3, vsync: this);
-    _user = await widget.controller.getUser();
+    _user = await NyStorage.read('user', model: new User());
     _userToken = await NyStorage.read('user_token');
     setState(() {});
+    super.init();
   }
 
   @override
@@ -38,6 +40,8 @@ class _ProfilePageState extends NyState<ProfilePage>
 
   Future<void> _onRefresh() async {
     _user = await widget.controller.getUser();
+    imageCache.clear();
+    imageCache.clearLiveImages();
     setState(() {});
   }
 
@@ -419,7 +423,7 @@ class _ProfilePageState extends NyState<ProfilePage>
                                             borderRadius:
                                                 BorderRadius.circular(50),
                                             image: DecorationImage(
-                                              image: NetworkImage(
+                                              image: CachedNetworkImageProvider(
                                                   getEnv("API_BASE_URL") +
                                                       "cdn/" +
                                                       _user!.avatar!,
